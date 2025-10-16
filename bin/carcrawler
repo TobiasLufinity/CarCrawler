@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+$loader = require __DIR__ . '/../vendor/autoload.php';
+
+use App\Commands\CommandManager;
+use App\Commands\Crawl;
+use App\Commands\UpdateCars;
+
+// Parse command and arguments
+$argv = $_SERVER['argv'] ?? [];
+$commandName = $argv[1] ?? null;
+$options = array_slice($argv, 2);
+$args = [];
+foreach ($options as $option) {
+    if (str_starts_with($option, '--')) {
+        [$key, $value] = array_pad(explode('=', substr($option, 2), 2), 2, true);
+        $args[$key] = $value === true ? true : $value;
+    }
+}
+
+$registry = new CommandManager();
+
+// Register commands
+$registry->register('crawl', Crawl::class);
+$registry->register('update:cars', UpdateCars::class);
+
+
+if (!$commandName || in_array($commandName, ['help', 'list', '--list', '--help'])) {
+    echo "Usage: php cli.php <command> [arguments...]\n";
+    echo "Available commands:\n";
+    foreach ($registry->list() as $name) {
+        echo "  - {$name}\n";
+    }
+    exit;
+}
+
+// Run command
+$registry->run($commandName, $args);

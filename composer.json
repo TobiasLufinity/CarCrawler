@@ -1,0 +1,13 @@
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tobias Nilsson",
+            "email": "tobias.nilsson@lufinity.se"
+        }
+    ]
+}
