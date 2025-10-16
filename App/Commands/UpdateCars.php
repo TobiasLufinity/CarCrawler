@@ -23,12 +23,12 @@ class UpdateCars
                     echo "--limit=n\n";
                     return;
                 }
-                $limit = $args['limit'];
+                $limit = (int)$args['limit'];
             }
             $crawler = new Crawler();
             $urlRepo = new UrlRepository();
             $where = "WHERE id IN (SELECT url_id FROM cars)";
-            $urls = $urlRepo->getAllCUrls((int)$limit, $where);
+            $urls = $urlRepo->getAllUrls((int)$limit, $where);
             foreach ($urls as $url) {
                 $crawler->crawlPage($url);
                 //Simple rate limiter
@@ -38,6 +38,7 @@ class UpdateCars
         } catch (\Exception $e) {
             echo "Crawl failed.\n";
             echo $e->getMessage();
+            exit(1);
         }
     }
 }

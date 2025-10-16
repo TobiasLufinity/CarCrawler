@@ -7,7 +7,7 @@ namespace App\Model;
 class UrlRepository {
 
 
-    public function getAllCUrls(int $limit = 10, string $where = ""): array
+    public function getAllUrls(int $limit = 10, string $where = ""): array
     {
         $connection = Database::getInstance()->getConnection();
         $query = "SELECT * FROM urls";
@@ -54,8 +54,8 @@ class UrlRepository {
     public function getUrl(string $url): Url
     {
         $connection = Database::getInstance()->getConnection();
-        $query = "SELECT * FROM urls where url = \"$url\"";
-        $statement = $connection->prepare($query);
+        $statement = $connection->prepare("SELECT * FROM urls where url = ?");
+        $statement->bind_param("s", $url);
         $statement->execute();
         $result = $statement->get_result();
 

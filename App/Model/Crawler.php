@@ -22,7 +22,7 @@ class Crawler {
 
     public function crawl($limit = 5): void
     {
-        $urls = $this->urlRepo->getAllCUrls($limit);
+        $urls = $this->urlRepo->getAllUrls($limit);
 
         if (empty($urls)) {
             $newUrl = new Url();

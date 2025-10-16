@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use DateMalformedStringException;
 use DateTime;
 
 class Url
@@ -52,23 +53,31 @@ class Url
 
     public function getCrawledAt(): ?DateTime
     {
-        return $this->crawledAt ? new DateTime($this->crawledAt) : null;
+        try {
+            return $this->crawledAt ? new DateTime($this->crawledAt) : null;
+        } catch (DateMalformedStringException) {
+            return null;
+        }
     }
 
     public function setCrawledAt(?DateTime $crawledAt): Url
     {
-        $this->crawledAt = $crawledAt->format('Y-m-d H:i:s');
+        $this->crawledAt = $crawledAt?->format('Y-m-d H:i:s');
         return $this;
     }
 
     public function getUpdatedAt(): ?DateTime
     {
-        return $this->updatedAt ? new DateTime($this->updatedAt) : null;
+        try {
+            return $this->updatedAt ? new DateTime($this->updatedAt) : null;
+        } catch (DateMalformedStringException) {
+        return null;
+        }
     }
 
     public function setUpdatedAt(?DateTime $updatedAt): Url
     {
-        $this->updatedAt = $updatedAt->format('Y-m-d H:i:s');;
+        $this->updatedAt = $updatedAt?->format('Y-m-d H:i:s');
         return $this;
     }
 
