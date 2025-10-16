@@ -53,14 +53,18 @@
             grid.innerHTML = `<div class="empty">Inget matchade din sökning.</div>`;
         } else {
             grid.innerHTML = data.data.map(item => {
+                const isNew = item.mileage < 500;
                 return `
               <article class="card" tabindex="0">
                 <h3>${escapeHTML(item.model)}</h3>
-                <p>${escapeHTML(item.description.length > 100 ? item.description.substring(0, 100) + "..." : item.description)}</p>
+                <p>${escapeHTML(item.description.length  > 100 ? item.description.substring(0, 100) + "..." : item.description)}</p>
                 <div class="tags">
                   <span class="tag">${escapeHTML(item.year)}</span>
-                  <span class="tag">${escapeHTML(item.mileage)}</span>
+                  <span class="tag">Mil: ${formatNumber(item.mileage)}</span>
                   <span class="tag">${escapeHTML(item.fuel)}</span>
+                  <span class="tag price">${formatNumber(item.price)} kr</span>
+                   ${isNew ? '<span class="tag new">Ny</span>' : ''}
+
                 </div>
               </article>
             `;
@@ -71,8 +75,12 @@
         renderPagination(data)
     }
 
+    function formatNumber(num) {
+        return num.toLocaleString('sv-SE');
+    }
+
     function renderPagination(data) {
-        const totalPages = Math.ceil(data.total / pageSizeSelect.value); //TODO: Get page size from selector
+        const totalPages = Math.ceil(data.total / pageSizeSelect.value);
         if (totalPages <= 1) { pagination.innerHTML = ''; return; }
 
         let html = '';

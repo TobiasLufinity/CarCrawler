@@ -89,6 +89,9 @@ header{
     border:1px solid rgba(148,163,184,.22);
     padding:4px 8px; border-radius:999px;
 }
+.tag.new {
+    background: green;
+}
 .empty{
     grid-column:1/-1; text-align:center; padding:48px 16px; color:var(--muted);
     border:1px dashed rgba(255,255,255,.14); border-radius:var(--radius);

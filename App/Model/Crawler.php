@@ -36,6 +36,7 @@ class Crawler {
 
         /** @var Url $url */
         foreach ($urls as $url) {
+
             $this->crawlPage($url);
             //Simple rate limiter
             sleep(1);
@@ -49,28 +50,26 @@ class Crawler {
         curl_setopt($curl, CURLOPT_URL, $urlObj->getUrl());
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $content = curl_exec($curl);
-        if (!$content) {
-            return;
-        }
+        if ($content) {
+            $dom = new DOMDocument();
+            libxml_use_internal_errors(true);
+            $dom->loadHTML($content);
+            libxml_clear_errors();
 
-        $dom = new DOMDocument();
-        libxml_use_internal_errors(true);
-        $dom->loadHTML($content);
-        libxml_clear_errors();
+            $xpath = new DOMXPath($dom);
 
-        $xpath = new DOMXPath($dom);
+            $this->processAnchors($xpath, $domain);
 
-        $this->processAnchors($xpath, $domain);
-
-        // Check if the page is a car page, otherwise return
-        $checkWord = $this->config->get('car_page_check_word');
-        if (str_contains($content, $checkWord)) {
-            $carRepo = new CarRepository();
-            $car = $carRepo->getCarFromUrl($urlObj->getId());
-            $data = $this->processCarPage($xpath);
-            $car->setData($data);
-            $car->setUrlId($urlObj->getId());
-            $carRepo->save($car);
+            // Check if the page is a car page, otherwise return
+            $checkWord = $this->config->get('car_page_check_word');
+            if (str_contains($content, $checkWord)) {
+                $carRepo = new CarRepository();
+                $car = $carRepo->getCarFromUrl($urlObj->getId());
+                $data = $this->processCarPage($xpath);
+                $car->setData($data);
+                $car->setUrlId($urlObj->getId());
+                $carRepo->save($car);
+            }
         }
         $urlObj->setCrawledAt(new DateTime());
         $this->urlRepo->save($urlObj);
