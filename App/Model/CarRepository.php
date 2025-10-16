@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 use mysqli;
 
 class CarRepository {

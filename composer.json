@@ -12,7 +12,6 @@
     ],
   "require": {
     "ext-mysqli": "*",
-    "ext-http": "*",
     "ext-dom": "*",
     "ext-curl": "*",
     "ext-libxml": "*"
