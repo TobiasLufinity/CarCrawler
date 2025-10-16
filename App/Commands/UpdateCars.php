@@ -3,10 +3,8 @@
 namespace App\Commands;
 
 use App\Model\Crawler;
-use App\Model\Database;
-use App\Model\Url;
 use App\Model\UrlRepository;
-use DateTime;
+use Exception;
 
 class UpdateCars
 {
@@ -14,10 +12,10 @@ class UpdateCars
     public function execute(array $args): void
     {
         try {
-            echo "Staring updating cars...\n";
+            echo "Starting updating cars...\n";
             $limit = 5;
             if (!empty($args)) {
-                if (!isset($args['limit']) || !is_numeric($args['limit']) || count($args) > 1) {
+                if (count($args) !== 1 || !isset($args['limit']) || !is_numeric($args['limit'])) {
                     echo "Invalid argument or number of arguments.\n";
                     echo "Available arguments are: \n";
                     echo "--limit=n\n";
@@ -28,14 +26,14 @@ class UpdateCars
             $crawler = new Crawler();
             $urlRepo = new UrlRepository();
             $where = "WHERE id IN (SELECT url_id FROM cars)";
-            $urls = $urlRepo->getAllUrls((int)$limit, $where);
+            $urls = $urlRepo->getAllUrls($limit, $where);
             foreach ($urls as $url) {
                 $crawler->crawlPage($url);
                 //Simple rate limiter
                 sleep(1);
             }
             echo "Finished crawl...\n";
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo "Crawl failed.\n";
             echo $e->getMessage();
             exit(1);

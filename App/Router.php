@@ -18,13 +18,13 @@ class Router
         $this->routes['POST'][$path] = $callback;
     }
 
-    public function resolve(): ?string
+    public function resolve(): string|false
     {
-        $method = $_SERVER['REQUEST_METHOD'];
+        $httpMethod = $_SERVER['REQUEST_METHOD'];
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         $path = explode('?', $path)[0];
 
-        $callback = $this->routes[$method][$path] ?? null;
+        $callback = $this->routes[$httpMethod][$path] ?? null;
 
         if ($callback === null) {
             http_response_code(404);

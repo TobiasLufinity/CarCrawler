@@ -9,5 +9,12 @@
             "name": "Tobias Nilsson",
             "email": "tobias.nilsson@lufinity.se"
         }
-    ]
+    ],
+  "require": {
+    "ext-mysqli": "*",
+    "ext-http": "*",
+    "ext-dom": "*",
+    "ext-curl": "*",
+    "ext-libxml": "*"
+  }
 }

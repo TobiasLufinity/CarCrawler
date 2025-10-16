@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Commands;
 
 use App\Model\Crawler;
+use Exception;
 
 class Crawl
 {
@@ -15,7 +16,7 @@ class Crawl
             $limit = 5;
             echo "Staring crawl...\n";
             if (!empty($args)) {
-                if (!isset($args['limit']) || !is_numeric($args['limit']) || count($args) > 1) {
+                if (count($args) !== 1 || !isset($args['limit']) || !is_numeric($args['limit'])) {
                     echo "Invalid argument or number of arguments.\n";
                     echo "Available arguments are: \n";
                     echo "--limit=n\n";
@@ -26,7 +27,7 @@ class Crawl
             $crawler = new Crawler();
             $crawler->crawl((int)$limit);
             echo "Finished crawl...\n";
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo "Crawl failed.\n";
             echo $e->getMessage();
         }

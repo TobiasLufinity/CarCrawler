@@ -10,7 +10,7 @@ class UrlRepository {
     public function getAllUrls(int $limit = 10, string $where = ""): array
     {
         $connection = Database::getInstance()->getConnection();
-        $query = "SELECT * FROM urls";
+        $query = "SELECT id, url, crawled_at, updated_at FROM urls";
         if ($where) {
             $query .= " $where";
         }
@@ -21,7 +21,7 @@ class UrlRepository {
         $result = $statement->get_result();
         $urls = [];
 
-        while ($row = $result->fetch_assoc()) {
+        foreach ($result->fetch_all(MYSQLI_ASSOC) as $row) {
             $urls[] = Url::fromArray($row);
         }
 
@@ -54,7 +54,7 @@ class UrlRepository {
     public function getUrl(string $url): Url
     {
         $connection = Database::getInstance()->getConnection();
-        $statement = $connection->prepare("SELECT * FROM urls where url = ?");
+        $statement = $connection->prepare("SELECT id, url, crawled_at, updated_at FROM urls where url = ?");
         $statement->bind_param("s", $url);
         $statement->execute();
         $result = $statement->get_result();

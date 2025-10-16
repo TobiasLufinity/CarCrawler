@@ -49,8 +49,8 @@ CREATE TABLE IF NOT EXISTS cars (
     mileage INT NULL,
     fuel VARCHAR(255) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (url_id) REFERENCES urls(id)
-    FULLTEXT idx_fulltext (brand, model, description, registration, fuel);
+    FOREIGN KEY (url_id) REFERENCES urls(id),
+    FULLTEXT idx_fulltext (brand, model, description, registration, fuel)
 ) ENGINE=InnoDB;
 ";
 

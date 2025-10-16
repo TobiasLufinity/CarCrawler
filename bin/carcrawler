@@ -32,7 +32,7 @@ if (!$commandName || in_array($commandName, ['help', 'list', '--list', '--help']
     echo "Usage: php cli.php <command> [arguments...]\n";
     echo "Available commands:\n";
     foreach ($registry->list() as $name) {
-        echo "  - {$name}\n";
+        echo "  - $name\n";
     }
     exit;
 }

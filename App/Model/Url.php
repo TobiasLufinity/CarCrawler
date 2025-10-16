@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use DateMalformedStringException;
 use DateTime;
+use Exception;
 
 class Url
 {
@@ -40,7 +40,7 @@ class Url
     }
 
 
-    public function getUrl(): string
+    public function getUrl(): ?string
     {
         return $this->url;
     }
@@ -55,7 +55,7 @@ class Url
     {
         try {
             return $this->crawledAt ? new DateTime($this->crawledAt) : null;
-        } catch (DateMalformedStringException) {
+        } catch (Exception) {
             return null;
         }
     }
@@ -70,8 +70,8 @@ class Url
     {
         try {
             return $this->updatedAt ? new DateTime($this->updatedAt) : null;
-        } catch (DateMalformedStringException) {
-        return null;
+        } catch (Exception) {
+            return null;
         }
     }
 

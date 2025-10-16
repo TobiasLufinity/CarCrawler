@@ -135,7 +135,7 @@
             });
     }
 
-    pageSizeSelect.addEventListener('change', e => {
+    pageSizeSelect.addEventListener('change', _ => {
         fetchCars(searchInput.value);
     });
 
